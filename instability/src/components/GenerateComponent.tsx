@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const typeOfSituation = [
   "Business",
   "Formal",
-  "Causal",
+  "Casual",
   "Romantic",
   "Athletic",
 ];
@@ -26,6 +27,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       typeOfSituation: "Business",
     });
   const [base64toSend, setBase64ToSend] = useState<string | null>(null);
+  const [base64Response, setBase64Response] = useState<string | null>(null);
 
   useEffect(() => {
     if (image) {
@@ -37,6 +39,15 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       updateObjectForGeneration(base64toSend);
     }
   }, [image, base64toSend]);
+
+  useEffect(() => {
+    if (base64Response) {
+      // Convert base64 to image
+      const img = document.createElement("img");
+      img.src = "data:image/jpeg;base64," + base64Response;
+      document.body.appendChild(img);
+    }
+  }, [base64Response]);
 
   function updateObjectForGeneration(newValue: string | Blob) {
     let key: string = "";
@@ -80,6 +91,20 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     updateObjectForGeneration(buttonText);
   }
 
+  async function handleGenerate() {
+    const body = {
+      image: base64toSend,
+      prompt: textForGeneration.animal + " in " + textForGeneration.typeOfSituation + " clothing",
+      search_prompt: "chair"
+    };
+
+    const response = await axios.post('http://localhost:4000/api/images/', body);
+
+    if (response.data) {
+      setBase64Response(response.data);
+    }
+  }
+
   return (
     <div>
       <div>
@@ -102,7 +127,9 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       </div>
       {image && (
         <div>
-          <button>Generate</button>
+          <button
+            onClick={handleGenerate}
+          >Generate</button>
         </div>
       )}
     </div>
