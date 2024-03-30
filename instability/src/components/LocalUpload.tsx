@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import GenerateComponent from "./GenerateComponent";
 
 const LocalUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -35,6 +36,7 @@ const LocalUpload = () => {
     <div>
       <input type="file" accept="image/*" onChange={onSelectFile} />
       {selectedFile && <img src={preview} alt="Selected preview" />}
+      <GenerateComponent image={preview} />
     </div>
   );
 };
