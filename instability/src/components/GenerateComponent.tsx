@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Throttle from "../utils/Throttle";
+import { toast } from "react-toastify";
+import { GenerateImageRequestBody } from "../types";
 
 const typeOfSituation = [
   "Business",
@@ -28,6 +31,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     });
   const [base64toSend, setBase64ToSend] = useState<string | null>(null);
   const [base64Response, setBase64Response] = useState<string | null>(null);
+  const handleGenerateImageThrottle = Throttle(axios.post, 60000);
 
   useEffect(() => {
     if (image) {
@@ -91,17 +95,20 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     updateObjectForGeneration(buttonText);
   }
 
-  async function handleGenerate() {
-    const body = {
-      image: base64toSend,
-      prompt: textForGeneration.animal + " in " + textForGeneration.typeOfSituation + " clothing",
-      search_prompt: "chair"
-    };
+  async function handleGenerateImage(requestBody: GenerateImageRequestBody) {
+    const response = await handleGenerateImageThrottle(
+      `${import.meta.env.VITE_BACKEND_URL}/api/images/`,
+      requestBody
+    );
 
-    const response = await axios.post('http://localhost:4000/api/images/', body);
+    if (response === undefined) {
+      toast.error("Too many requests. Please try again later.");
+      return;
+    }
 
-    if (response.data) {
+    else if (response.data) {
       setBase64Response(response.data);
+      return;
     }
   }
 
@@ -128,8 +135,26 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       {image && (
         <div>
           <button
-            onClick={handleGenerate}
-          >Generate</button>
+            onClick={() => {
+              if (
+                base64toSend &&
+                textForGeneration.animal &&
+                textForGeneration.typeOfSituation
+              ) {
+                handleGenerateImage({
+                  image: base64toSend,
+                  prompt:
+                    textForGeneration.animal +
+                    " in " +
+                    textForGeneration.typeOfSituation +
+                    " clothing",
+                  search_prompt: "chair",
+                });
+              }
+            }}
+          >
+            Generate
+          </button>
         </div>
       )}
     </div>
