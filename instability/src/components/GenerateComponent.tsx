@@ -11,7 +11,7 @@ const typeOfSituation = [
   "Romantic",
   "Athletic",
 ];
-const animalType = ["Human", "Animal"];
+const animalType = ["Dog", "Cat"];
 
 interface GenerateProps {
   image: string | undefined;
@@ -104,37 +104,63 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     if (response === undefined) {
       toast.error("Too many requests. Please try again later.");
       return;
-    }
-
-    else if (response.data) {
+    } else if (response.data) {
       setBase64Response(response.data);
       return;
     }
   }
 
   return (
-    <div>
-      <div>
+    <>
+      <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
+        <h1 className="text-xl">2. Choose an Animal or Randomize</h1>
+
         {animalType.map((animal, index) => {
           return (
-            <button onClick={clickToUpdateObject} key={index}>
+            <button
+              onClick={clickToUpdateObject}
+              key={index}
+              className={`border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer ${
+                textForGeneration.animal === animal ? "bg-orange-500" : ""
+              }`}
+            >
               {animal}
             </button>
           );
         })}
-      </div>
-      <div>
+        <button
+          onClick={() => {
+
+          }}
+          className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer"
+          >
+            Randomize
+          </button>
+
+      </section>
+
+      <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
+        <h1 className="text-xl">3. Choose a Situation</h1>
         {typeOfSituation.map((situation, index) => {
           return (
-            <button onClick={clickToUpdateObject} key={index}>
+            <button
+              className={`border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer ${
+                textForGeneration.typeOfSituation === situation
+                  ? "bg-orange-500"
+                  : ""
+              }`}
+              onClick={clickToUpdateObject}
+              key={index}
+            >
               {situation}
             </button>
           );
         })}
-      </div>
+      </section>
+
       {image && (
-        <div>
           <button
+            className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
             onClick={() => {
               if (
                 base64toSend &&
@@ -155,9 +181,8 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
           >
             Generate
           </button>
-        </div>
       )}
-    </div>
+    </>
   );
 };
 
