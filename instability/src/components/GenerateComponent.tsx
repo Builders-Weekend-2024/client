@@ -67,6 +67,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
 
   useEffect(() => {
     if (base64Response) {
+      setShowModal(true);
     }
   }, [base64Response]);
 
@@ -208,6 +209,9 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
         <button
           className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
           onClick={() => {
+            // Move the window to the top of the page
+            window.scrollTo(0, 0);
+
             const {
               noun,
               situation,
@@ -229,12 +233,12 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
         </button>
       )}
       {generatingImage && (
-        <div className="h-screen w-screen bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
+        <div className="h-full w-full bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
           <MoonLoader />
         </div>
       )}
       {showModal && (
-        <div className="h-screen w-screen bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
+        <div className="h-full w-full bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
           <GeneratedImagePreview
             base64Response={base64Response}
             setShowModal={setShowModal}

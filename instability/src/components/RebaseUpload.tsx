@@ -48,14 +48,14 @@ const RebaseUpload = ({ setPreview }: RebaseProps) => {
 
   return (
     <div>
-      <form className="flex flex-col" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <label htmlFor="roomId" className="text-center">
-          Or Enter Your Rebase Room ID
+          ...Or Enter Your Rebase Room ID
         </label>
         <input
           type="text"
           name="roomId"
-          className="border-white text-black border-2 px-4 py-2 rounded-lg bg-transparent "
+          className="border-white text-white border-2 px-4 py-2 rounded-lg bg-transparent "
         />
         <button
           type="submit"

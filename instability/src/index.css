@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-#root {
-  height: 100vh;
-  width: 100vw;
-  padding: 2rem;
+body {
+  
   background: linear-gradient(270deg, #e06249 0%, #f9a856 100%);
   background-size: 400% 400%;
   animation: Gradient 15s ease infinite;
