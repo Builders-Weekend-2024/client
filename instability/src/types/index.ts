@@ -1,3 +1,4 @@
 import { GenerateImageRequestBody } from "./GenerateImageRequestBody";
+import { Animal } from "./Animal";
 
-export type { GenerateImageRequestBody }
+export type { GenerateImageRequestBody, Animal}
