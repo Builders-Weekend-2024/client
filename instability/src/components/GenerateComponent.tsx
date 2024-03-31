@@ -6,6 +6,7 @@ import { GenerateImageRequestBody, SituationDetails } from "../types";
 import getRandomAnimalChoice from "../utils/GetRandomAnimalChoice";
 import data from "../../data/instability.animal.json";
 import { MoonLoader } from "react-spinners";
+import GeneratedImagePreview from "./GenerateImagePreview";
 
 const SITUATION = ["Business Meeting", "Romantic Date", "Yoga Class"];
 const ANIMAL = ["Dog", "Cat"];
@@ -47,7 +48,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   const [base64Response, setBase64Response] = useState<string | null>(null);
   const handleGenerateImageThrottle = Throttle(axios.post, 60000);
   const [generatingImage, setGeneratingImage] = useState<boolean>(false);
-
+  const [showModal, setShowModal] = useState<boolean>(false);
   useEffect(() => {
     if (image) {
       if (image.startsWith("data")) {
@@ -66,10 +67,6 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
 
   useEffect(() => {
     if (base64Response) {
-      // Convert base64 to image
-      const img = document.createElement("img");
-      img.src = "data:image/jpeg;base64," + base64Response;
-      document.body.appendChild(img);
     }
   }, [base64Response]);
 
@@ -151,7 +148,13 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     const { objectToReplace, clothing, additonalPrompt } =
       SITUATION_MAPPING[situation] || {};
 
-    console.log({ noun, situation, objectToReplace, clothing, additonalPrompt })
+    console.log({
+      noun,
+      situation,
+      objectToReplace,
+      clothing,
+      additonalPrompt,
+    });
 
     return { noun, situation, objectToReplace, clothing, additonalPrompt };
   }
@@ -228,6 +231,14 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       {generatingImage && (
         <div className="h-screen w-screen bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
           <MoonLoader />
+        </div>
+      )}
+      {showModal && (
+        <div className="h-screen w-screen bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
+          <GeneratedImagePreview
+            base64Response={base64Response}
+            setShowModal={setShowModal}
+          />
         </div>
       )}
     </>
