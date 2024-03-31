@@ -35,9 +35,14 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
 
   useEffect(() => {
     if (image) {
-      blobUrlToBase64(image).then((convertedImage) =>
-        setBase64ToSend(convertedImage)
-      );
+      if (image.startsWith("data")) {
+        setBase64ToSend(image.slice(image.indexOf(",") + 1));
+        return;
+      } else {
+        blobUrlToBase64(image).then((convertedImage) =>
+          setBase64ToSend(convertedImage)
+        );
+      }
     }
     if (base64toSend) {
       updateObjectForGeneration(base64toSend);
