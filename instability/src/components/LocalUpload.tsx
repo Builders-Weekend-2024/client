@@ -33,11 +33,41 @@ const LocalUpload = () => {
   };
 
   return (
-    <div>
-      <input type="file" accept="image/*" onChange={onSelectFile} />
-      {selectedFile && <img src={preview} alt="Selected preview" />}
-      {preview && <GenerateComponent image={preview} />}
-    </div>
+    <>
+      <section className="flex flex-col gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
+        <div className="flex flex-row gap-6 justify-center items-center">
+          <h1 className="text-xl">1. Choose an Image or Enter an ID</h1>
+
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            onChange={onSelectFile}
+            className="hidden"
+          />
+          <label
+            htmlFor="fileInput"
+            className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer"
+          >
+            {selectedFile ? "Change Image" : "Upload Image"}
+          </label>
+        </div>
+
+        {selectedFile && (
+          <div className="flex flex-col gap-6 text-white font-bold justify-center items-center">
+            <h2 className="text-xl">Selected Image:</h2>
+            <img
+              src={preview}
+              alt="Selected Preview"
+              className="w-[33%] border-white border-2 rounded-lg object-cover"
+            />
+          </div>
+        )}
+        
+      </section>
+
+      <GenerateComponent image={preview} />
+    </>
   );
 };
 
