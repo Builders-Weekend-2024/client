@@ -31,9 +31,14 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
 
   useEffect(() => {
     if (image) {
-      blobUrlToBase64(image).then((convertedImage) =>
-        setBase64ToSend(convertedImage)
-      );
+      if (image.startsWith("data")) {
+        setBase64ToSend(image.slice(image.indexOf(",") + 1));
+        return;
+      } else {
+        blobUrlToBase64(image).then((convertedImage) =>
+          setBase64ToSend(convertedImage)
+        );
+      }
     }
     if (base64toSend) {
       updateObjectForGeneration(base64toSend);
@@ -94,11 +99,18 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   async function handleGenerate() {
     const body = {
       image: base64toSend,
-      prompt: textForGeneration.animal + " in " + textForGeneration.typeOfSituation + " clothing",
-      search_prompt: "chair"
+      prompt:
+        textForGeneration.animal +
+        " in " +
+        textForGeneration.typeOfSituation +
+        " clothing",
+      search_prompt: "chair",
     };
 
-    const response = await axios.post('http://localhost:4000/api/images/', body);
+    const response = await axios.post(
+      "http://localhost:4000/api/images/",
+      body
+    );
 
     if (response.data) {
       setBase64Response(response.data);
@@ -127,9 +139,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       </div>
       {image && (
         <div>
-          <button
-            onClick={handleGenerate}
-          >Generate</button>
+          <button onClick={handleGenerate}>Generate</button>
         </div>
       )}
     </div>

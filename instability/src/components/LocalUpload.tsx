@@ -36,7 +36,7 @@ const LocalUpload = () => {
     <div>
       <input type="file" accept="image/*" onChange={onSelectFile} />
       {selectedFile && <img src={preview} alt="Selected preview" />}
-      <GenerateComponent image={preview} />
+      {preview && <GenerateComponent image={preview} />}
     </div>
   );
 };
