@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import GenerateComponent from "./GenerateComponent";
 import axios from "axios";
 
-const RebaseUpload = () => {
+const RebaseUpload = ({ setPreview }) => {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [rebaseImages, setRebaseImages] = useState<string[] | null>(null);
-  const [selectedImg, setSelectedImg] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (roomId) {
@@ -46,28 +44,38 @@ const RebaseUpload = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="roomId">Enter Your Rebase Room ID</label>
-        <input type="text" name="roomId" />
-        <button type="submit">Submit</button>
+      <form className="flex flex-col" onSubmit={handleSubmit}>
+        <label htmlFor="roomId" className="text-center">
+          Or Enter Your Rebase Room ID
+        </label>
+        <input
+          type="text"
+          name="roomId"
+          className="border-white text-black border-2 px-4 py-2 rounded-lg bg-transparent "
+        />
+        <button
+          type="submit"
+          className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer"
+        >
+          Submit
+        </button>
       </form>
       {rebaseImages && (
-        <div className="flex flex-row">
+        <div className="flex flex-row p-12">
           {rebaseImages?.map((src, i) => {
             return (
               <button
                 onClick={() => {
-                  setSelectedImg(src);
+                  setPreview(src);
                 }}
                 key={i}
               >
-                <img src={src} />
+                <img src={src} className="h-[100px] w-[100px] mx-2" />
               </button>
             );
           })}
         </div>
       )}
-      {rebaseImages && <GenerateComponent image={selectedImg} />}
     </div>
   );
 };

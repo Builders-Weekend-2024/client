@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GenerateComponent from "./GenerateComponent";
+import RebaseUpload from "./RebaseUpload";
 
 const LocalUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -36,7 +37,7 @@ const LocalUpload = () => {
     <>
       <section className="flex flex-col gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
         <div className="flex flex-row gap-6 justify-center items-center">
-          <h1 className="text-xl">1. Choose an Image or Enter an ID</h1>
+          <h1 className="text-xl">1. Choose an Image</h1>
 
           <input
             id="fileInput"
@@ -52,6 +53,7 @@ const LocalUpload = () => {
             {selectedFile ? "Change Image" : "Upload Image"}
           </label>
         </div>
+        <RebaseUpload setPreview={setPreview} />
 
         {selectedFile && (
           <div className="flex flex-col gap-6 text-white font-bold justify-center items-center">
@@ -63,7 +65,6 @@ const LocalUpload = () => {
             />
           </div>
         )}
-        
       </section>
 
       <GenerateComponent image={preview} />

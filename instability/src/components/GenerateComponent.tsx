@@ -3,6 +3,7 @@ import axios from "axios";
 import Throttle from "../utils/Throttle";
 import { toast } from "react-toastify";
 import { GenerateImageRequestBody } from "../types";
+import { MoonLoader } from "react-spinners";
 
 const typeOfSituation = [
   "Business",
@@ -32,6 +33,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   const [base64toSend, setBase64ToSend] = useState<string | null>(null);
   const [base64Response, setBase64Response] = useState<string | null>(null);
   const handleGenerateImageThrottle = Throttle(axios.post, 60000);
+  const [generatingImage, setGeneratingImage] = useState<boolean>(false);
 
   useEffect(() => {
     if (image) {
@@ -101,6 +103,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   }
 
   async function handleGenerateImage(requestBody: GenerateImageRequestBody) {
+    setGeneratingImage(true);
     const response = await handleGenerateImageThrottle(
       `${import.meta.env.VITE_BACKEND_URL}/api/images/`,
       requestBody
@@ -108,9 +111,11 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
 
     if (response === undefined) {
       toast.error("Too many requests. Please try again later.");
+      setGeneratingImage(false);
       return;
     } else if (response.data) {
       setBase64Response(response.data);
+      setGeneratingImage(false);
       return;
     }
   }
@@ -134,14 +139,11 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
           );
         })}
         <button
-          onClick={() => {
-
-          }}
+          onClick={() => {}}
           className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer"
-          >
-            Randomize
-          </button>
-
+        >
+          Randomize
+        </button>
       </section>
 
       <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
@@ -164,28 +166,33 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       </section>
 
       {image && (
-          <button
-            className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
-            onClick={() => {
-              if (
-                base64toSend &&
-                textForGeneration.animal &&
-                textForGeneration.typeOfSituation
-              ) {
-                handleGenerateImage({
-                  image: base64toSend,
-                  prompt:
-                    textForGeneration.animal +
-                    " in " +
-                    textForGeneration.typeOfSituation +
-                    " clothing",
-                  search_prompt: "chair",
-                });
-              }
-            }}
-          >
-            Generate
-          </button>
+        <button
+          className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
+          onClick={() => {
+            if (
+              base64toSend &&
+              textForGeneration.animal &&
+              textForGeneration.typeOfSituation
+            ) {
+              handleGenerateImage({
+                image: base64toSend,
+                prompt:
+                  textForGeneration.animal +
+                  " in " +
+                  textForGeneration.typeOfSituation +
+                  " clothing",
+                search_prompt: "chair",
+              });
+            }
+          }}
+        >
+          Generate
+        </button>
+      )}
+      {generatingImage && (
+        <div className="h-screen w-screen bg-gray-900 bg-opacity-75 absolute inset-0 z-50 flex justify-center items-center">
+          <MoonLoader />
+        </div>
       )}
     </>
   );
