@@ -2,19 +2,30 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Throttle from "../utils/Throttle";
 import { toast } from "react-toastify";
-import { GenerateImageRequestBody } from "../types";
+import { GenerateImageRequestBody, SituationDetails } from "../types";
 import getRandomAnimalChoice from "../utils/GetRandomAnimalChoice";
 import data from "../../data/instability.animal.json";
 import { MoonLoader } from "react-spinners";
 
-const typeOfSituation = [
-  "Business",
-  "Formal",
-  "Casual",
-  "Romantic",
-  "Athletic",
-];
-const animalType = ["Dog", "Cat"];
+const SITUATION = ["Business Meeting", "Romantic Date", "Yoga Class"];
+const ANIMAL = ["Dog", "Cat"];
+const SITUATION_MAPPING: Record<string, SituationDetails> = {
+  "Business Meeting": {
+    objectToReplace: "chair",
+    clothing: "business attire such as a suit and tie",
+    additonalPrompt: "with a laptop and coffee mug",
+  },
+  "Romantic Date": {
+    objectToReplace: "table",
+    clothing: "formal attire such as a dress or suit",
+    additonalPrompt: "with a candlelit dinner",
+  },
+  "Yoga Class": {
+    objectToReplace: "floor",
+    clothing: "comfortable yoga attire",
+    additonalPrompt: "with a yoga mat",
+  },
+};
 
 interface GenerateProps {
   image: string | undefined;
@@ -69,9 +80,9 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   function updateObjectForGeneration(newValue: string | Blob) {
     let key: string = "";
     if (typeof newValue === "string") {
-      if (typeOfSituation.includes(newValue)) {
+      if (SITUATION.includes(newValue)) {
         key = "typeOfSituation";
-      } else if (animalType.includes(newValue)) {
+      } else if (ANIMAL.includes(newValue)) {
         key = "animal";
       } else {
         key = "image";
@@ -133,12 +144,24 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     setTextForGeneration(newObj);
   }
 
+  function handlePrompts() {
+    const noun = textForGeneration.animal;
+    const situation = textForGeneration.typeOfSituation;
+
+    const { objectToReplace, clothing, additonalPrompt } =
+      SITUATION_MAPPING[situation] || {};
+
+    console.log({ noun, situation, objectToReplace, clothing, additonalPrompt })
+
+    return { noun, situation, objectToReplace, clothing, additonalPrompt };
+  }
+
   return (
     <>
       <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
         <h1 className="text-xl">2. Choose an Animal or Randomize</h1>
 
-        {animalType.map((animal, index) => {
+        {ANIMAL.map((animal, index) => {
           return (
             <button
               onClick={clickToUpdateObject}
@@ -161,7 +184,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
 
       <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
         <h1 className="text-xl">3. Choose a Situation</h1>
-        {typeOfSituation.map((situation, index) => {
+        {SITUATION.map((situation, index) => {
           return (
             <button
               className={`border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer ${
@@ -182,19 +205,19 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
         <button
           className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
           onClick={() => {
-            if (
-              base64toSend &&
-              textForGeneration.animal &&
-              textForGeneration.typeOfSituation
-            ) {
+            const {
+              noun,
+              situation,
+              clothing,
+              objectToReplace,
+              additonalPrompt,
+            } = handlePrompts();
+
+            if (base64toSend && noun && situation) {
               handleGenerateImage({
                 image: base64toSend,
-                prompt:
-                  textForGeneration.animal +
-                  " in " +
-                  textForGeneration.typeOfSituation +
-                  " clothing",
-                search_prompt: "chair",
+                prompt: `${noun}s wearing ${clothing} in a ${situation} setting ${additonalPrompt}`,
+                search_prompt: objectToReplace,
               });
             }
           }}
