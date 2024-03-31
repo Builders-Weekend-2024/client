@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const RebaseUpload = ({ setPreview }) => {
+interface RebaseProps {
+  setPreview: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+
+const RebaseUpload = ({ setPreview }: RebaseProps) => {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [rebaseImages, setRebaseImages] = useState<string[] | null>(null);
 
