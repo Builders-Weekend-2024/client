@@ -3,6 +3,8 @@ import axios from "axios";
 import Throttle from "../utils/Throttle";
 import { toast } from "react-toastify";
 import { GenerateImageRequestBody } from "../types";
+import getRandomAnimalChoice from "../utils/GetRandomAnimalChoice";
+import data from "../../data/instability.animal.json";
 
 const typeOfSituation = [
   "Business",
@@ -57,6 +59,10 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       document.body.appendChild(img);
     }
   }, [base64Response]);
+
+  useEffect(() => {
+    console.log(textForGeneration);
+  }, [textForGeneration]);
 
   function updateObjectForGeneration(newValue: string | Blob) {
     let key: string = "";
@@ -115,6 +121,13 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
     }
   }
 
+  function handleRandomAnimalCick() {
+    const randomAnimal = getRandomAnimalChoice(data.animals);
+
+    const newObj = { ...textForGeneration, ["animal"]: randomAnimal };
+    setTextForGeneration(newObj);
+  }
+
   return (
     <>
       <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
@@ -134,14 +147,11 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
           );
         })}
         <button
-          onClick={() => {
-
-          }}
+          onClick={handleRandomAnimalCick}
           className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer"
-          >
-            Randomize
-          </button>
-
+        >
+          Randomize
+        </button>
       </section>
 
       <section className="flex flex-row gap-6 text-white font-bold justify-center items-center border-white border-2 p-6 rounded-lg">
@@ -164,28 +174,28 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
       </section>
 
       {image && (
-          <button
-            className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
-            onClick={() => {
-              if (
-                base64toSend &&
-                textForGeneration.animal &&
-                textForGeneration.typeOfSituation
-              ) {
-                handleGenerateImage({
-                  image: base64toSend,
-                  prompt:
-                    textForGeneration.animal +
-                    " in " +
-                    textForGeneration.typeOfSituation +
-                    " clothing",
-                  search_prompt: "chair",
-                });
-              }
-            }}
-          >
-            Generate
-          </button>
+        <button
+          className="border-white border-2 px-4 py-2 rounded-lg hover:bg-orange-500 hover:cursor-pointer text-white font-bold"
+          onClick={() => {
+            if (
+              base64toSend &&
+              textForGeneration.animal &&
+              textForGeneration.typeOfSituation
+            ) {
+              handleGenerateImage({
+                image: base64toSend,
+                prompt:
+                  textForGeneration.animal +
+                  " in " +
+                  textForGeneration.typeOfSituation +
+                  " clothing",
+                search_prompt: "chair",
+              });
+            }
+          }}
+        >
+          Generate
+        </button>
       )}
     </>
   );

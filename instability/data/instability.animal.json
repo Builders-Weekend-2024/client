@@ -1,102 +1,106 @@
-[{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702af"
-  },
-  "species": "cow"
-},
 {
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b0"
-  },
-  "species": "pig"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b1"
-  },
-  "species": "chicken"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b2"
-  },
-  "species": "sheep"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b3"
-  },
-  "species": "horse"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b4"
-  },
-  "species": "dog"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b5"
-  },
-  "species": "cat"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b6"
-  },
-  "species": "hamster"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b7"
-  },
-  "species": "goat"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b8"
-  },
-  "species": "hedgehog"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702b9"
-  },
-  "species": "turkey"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702ba"
-  },
-  "species": "rabbit"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702bb"
-  },
-  "species": "ferret"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702bc"
-  },
-  "species": "goose"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702bd"
-  },
-  "species": "llama"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702be"
-  },
-  "species": "parrot"
-},
-{
-  "_id": {
-    "$oid": "6607df34c7a33011ae9702bf"
-  },
-  "species": "canary"
-}]
+  "animals": [
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702af"
+      },
+      "species": "cow"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b0"
+      },
+      "species": "pig"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b1"
+      },
+      "species": "chicken"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b2"
+      },
+      "species": "sheep"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b3"
+      },
+      "species": "horse"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b4"
+      },
+      "species": "dog"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b5"
+      },
+      "species": "cat"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b6"
+      },
+      "species": "hamster"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b7"
+      },
+      "species": "goat"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b8"
+      },
+      "species": "hedgehog"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702b9"
+      },
+      "species": "turkey"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702ba"
+      },
+      "species": "rabbit"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702bb"
+      },
+      "species": "ferret"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702bc"
+      },
+      "species": "goose"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702bd"
+      },
+      "species": "llama"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702be"
+      },
+      "species": "parrot"
+    },
+    {
+      "_id": {
+        "$oid": "6607df34c7a33011ae9702bf"
+      },
+      "species": "canary"
+    }
+  ]
+}
