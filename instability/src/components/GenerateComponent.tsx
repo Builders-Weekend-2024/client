@@ -49,6 +49,7 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   const handleGenerateImageThrottle = Throttle(axios.post, 60000);
   const [generatingImage, setGeneratingImage] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+
   useEffect(() => {
     if (image) {
       if (image.startsWith("data")) {
@@ -72,8 +73,16 @@ const GenerateComponent: React.FC<GenerateProps> = ({ image }) => {
   }, [base64Response]);
 
   useEffect(() => {
-    console.log(textForGeneration);
-  }, [textForGeneration]);
+    if (showModal || generatingImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showModal, generatingImage]);
 
   function updateObjectForGeneration(newValue: string | Blob) {
     let key: string = "";
